@@ -5,6 +5,7 @@ import "./form.css";
 import InputForm from "./components/InputForm";
 import PlanTabs from "./PlanTabs";
 import { usePlans } from "./PlanContext";
+import ExportFinalPlan from "./components/ExportFinalPlan";
 
 const FinalPlan = () => {
   const location = useLocation();
@@ -12,27 +13,38 @@ const FinalPlan = () => {
   const qualified = location.state?.status;
   console.log(qualified);
   const { activePlan, setActivePlan, markPlanComplete } = usePlans();
+  const { formData = {}, status } = location.state || {};
+  const yearlyArray = location.state?.yearlyArray || {};
+  const scheduleMonthFull = location.state?.scheduleMonthFull || {};
+  const scheduleYearFull = location.state?.scheduleYearFull || {};
 
+console.log(yearlyArray);
 
-  // Form states
-  const [housePrice, setHousePrice] = useState('');
-  const [savings, setSavings] = useState('');
-  const [income, setIncome] = useState('');
-  const [expenses, setExpenses] = useState('');
-  const [currency, setCurrency] = useState('VND');
-  const [downPaymentPct, setDownPaymentPct] = useState('30');
-  const [customPct, setCustomPct] = useState('');
-  const [mortgageTerm, setTerm] = useState('20');
-  const [customTerm, setCustomTerm] = useState('');
+const {
+  housePrice = '',
+  savings = '',
+  currency = 'VND',
+  downPaymentPct = '30',
+  customPct = '',
+  growthRate = '',
+  yearsToSave = '',
+  income = '',
+  expenses = '',
+  mortgageTerm = '20',
+  customTerm = '',
+} = formData;
 
-const handleNext = () => {
-  markPlanComplete(); // ✅ đánh dấu đã hoàn thành PLAN hiện tại
-  if (activePlan < 5) {
-    setActivePlan(activePlan + 1);
-  } else {
-    alert("🎉 All plans completed!");
-  }
-};
+  const handleNext = () => {
+    markPlanComplete();
+
+    if (activePlan < 5) {
+      setActivePlan(activePlan + 1);
+      navigate("/downpayment");
+    } else {
+      alert("🎉 All plans completed!");
+    }
+  };
+
 
   return (
     <div className="container">
@@ -52,24 +64,17 @@ const handleNext = () => {
           {/* Form fields */}
           <InputForm
             housePrice={housePrice}
-            setHousePrice={setHousePrice}
             savings={savings}
-            setSavings={setSavings}
             income={income}
-            setIncome={setIncome}
             expenses={expenses}
-            setExpenses={setExpenses}
             downPaymentPct={downPaymentPct}
-            setDownPaymentPct={setDownPaymentPct}
             customPct={customPct}
-            setCustomPct={setCustomPct}
             mortgageTerm={mortgageTerm}
-            setTerm={setTerm}
             customTerm={customTerm}
-            setCustomTerm={setCustomTerm}
             currency={currency}
-            setCurrency={setCurrency}
-            />
+            readOnly={true}
+        />
+
 
           <button className="next-btn" onClick={handleNext}>
             NEXT PLAN
@@ -93,7 +98,11 @@ const handleNext = () => {
               <p className="followup-line">
                 You can also click the <strong>EXPORT</strong> button to save a comprehensive copy of this particular result!
               </p>
-              <button className="export-btn">EXPORT</button>
+              <ExportFinalPlan
+                scheduleMonthFull={scheduleMonthFull}
+                scheduleYearFull={scheduleYearFull}
+                yearlyArray={yearlyArray}
+              />
             </div>
           ) : (
             <div className="result-warning">
@@ -106,7 +115,11 @@ const handleNext = () => {
                 <li>🔹 Adjust your mortgage plan → Try increasing the loan term</li>
                 <li>🔹 Save more upfront → Build a larger down payment to reduce the loan size</li>
               </ul>
-              <button className="export-btn">EXPORT</button>
+              <ExportFinalPlan
+                scheduleMonthFull={scheduleMonthFull}
+                scheduleYearFull={scheduleYearFull}
+                yearlyArray={yearlyArray}
+              />
             </div>
           )}
         </div>

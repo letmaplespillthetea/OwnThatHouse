@@ -8,6 +8,9 @@ import {
   LinearScale
 } from "chart.js";
 import "./form.css";
+import BarChart from './components/BarChart'; 
+import PlanTabs from "./PlanTabs";
+import { usePlans } from "./PlanContext";
 
 ChartJS.register(BarElement, CategoryScale, LinearScale);
 
@@ -25,14 +28,46 @@ const SavingPlan = () => {
   const [yearsToSave, setYearsToSave] = useState("1");
   const [futurePrice, setFuturePrice] = useState("");
   const navigate = useNavigate();
+  const [yearlyArray, setYearlyArray] = useState ("");
   
+  const [yearlySavings, setYearlySavings] = useState(null);
   const [monthlySavings, setMonthlySavings] = useState(null);
+  const [years, setYears] = useState(null);
   const [months, setMonths] = useState(null);
   const [showResult, setShowResult] = useState(false);
 
+  const prevForm = location.state?.formData || {};
+
+  const generateYearlySavings = ({
+      currentSavings,
+      monthlySaving,
+      years,
+      noDepositRate,
+      depositRate
+    }) => {
+      const yearly = [];
+      let prev = parseFloat(currentSavings);
+
+      for (let n = 1; n <= years; n++) {
+        const r = depositRate / 12;
+        const annuityFactor = (Math.pow(1 + r, n * 12) - 1) / r;
+
+        const yearlySaving = currentSavings * Math.pow(1 + noDepositRate, n) + monthlySaving * annuityFactor;
+
+        yearly.push({
+          year: n,
+          value: yearlySaving
+        });
+
+        prev = yearlySaving;
+      }
+
+      return yearly;
+    };
+
+
   const handleCheckSavingsPlan = () => {
     const years = parseInt(yearsToSave);
-    const months = years * 12;
 
     const growth = parseFloat(growthRate) / 100 || 0;
     const dpPct = downPaymentPct === "custom" ? parseFloat(customPct) / 100 : parseFloat(downPaymentPct) / 100;
@@ -49,11 +84,24 @@ const SavingPlan = () => {
     const depositRate = years === 1 ? 0.04 : 0.042;
     const r = depositRate / 12;
 
-    const monthly = additionalRequired > 0
-      ? (additionalRequired * r) / (Math.pow(1 + r, months) - 1)
+    const monthlyRequiredSavings = additionalRequired > 0
+      ? (additionalRequired * r) / (Math.pow(1 + r, 12 * years) - 1)
       : 0;
 
-    setMonthlySavings(monthly.toFixed(0));
+
+    setMonthlySavings(monthlyRequiredSavings.toFixed(0));
+
+    const yearlyArray = generateYearlySavings({
+      currentSavings: savingsNow,
+      monthlySaving: monthlyRequiredSavings,
+      years,
+      noDepositRate,
+      depositRate
+    });
+
+    setYearlyArray(yearlyArray);
+
+    console.log(yearlyArray);
     setMonths(months);
     setShowResult(true);
     setFuturePrice(futurePrice);
@@ -61,6 +109,7 @@ const SavingPlan = () => {
 
   return (
     <div className="container">
+      <PlanTabs/>
       <div className="cards">
 
         {/* LEFT SIDE */}
@@ -155,25 +204,10 @@ const SavingPlan = () => {
           {showResult ? (
             <div className="result-success">
               <p className="summary-line">
-                You need to save <strong>{monthlySavings} ₫</strong> per month for <strong>{months}</strong> months to reach your goal.
+                You need to save <strong>{monthlySavings} ₫</strong> per month for <strong>{12 * yearsToSave}</strong> months to reach your goal.
               </p>
 
-              <Bar
-                data={{
-                  labels: Array.from({ length: 5 }, (_, i) => `${i + 1}`),
-                  datasets: [{
-                    label: "Amount (₫)",
-                    data: Array(5).fill(monthlySavings),
-                    backgroundColor: "#00cfff"
-                  }]
-                }}
-                options={{
-                  responsive: true,
-                  scales: {
-                    y: { beginAtZero: true }
-                  }
-                }}
-              />
+              {yearlyArray.length > 0 && <BarChart yearly={yearlyArray} />}
 
               <p className="followup-line">
                 Are you ready for the <strong>next part</strong> of your saving plan? You can always come back to change variables!
@@ -181,8 +215,15 @@ const SavingPlan = () => {
               <button
                   className="next-btn"
                   onClick={() =>
-                    navigate('/mortgage', {
-                      state: { futurePrice: parseFloat(housePrice) }
+                    navigate("/mortgage", {
+                      state: {
+                        formData: {
+                          ...prevForm,
+                          growthRate,
+                          yearsToSave, 
+                          futurePrice,
+                        }, futurePrice: futurePrice, yearlyArray
+                      }
                     })
                   }
                 >

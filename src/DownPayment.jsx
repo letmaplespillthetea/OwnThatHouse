@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react';
 import { FaPercent } from 'react-icons/fa';
 import './form.css';
 import { useNavigate } from 'react-router-dom';
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 import LoanAboutCard from './components/LoanAboutCard';
+import PlanTabs from "./PlanTabs";
+import { usePlans } from "./PlanContext";
 
 export default function DownPayment() {
   const navigate = useNavigate();
@@ -32,6 +32,7 @@ export default function DownPayment() {
 
   return (
     <div className="container">
+      <PlanTabs />
       <div className="cards">
         {/* LEFT: INPUT */}
         <div className="card input-card">
@@ -124,7 +125,15 @@ export default function DownPayment() {
                   className="next-btn"
                   onClick={() =>
                     navigate('/mortgage', {
-                      state: { presentPrice: parseFloat(housePrice) }
+                      state: {
+                            formData: {
+                              housePrice,
+                              savings,
+                              currency,
+                              downPaymentPct,
+                              customPct
+                            }, presentPrice: housePrice, savings
+                          }
                     })
                   }
                 >
@@ -150,8 +159,17 @@ export default function DownPayment() {
                       className="next-btn"
                       onClick={() =>
                         navigate("/saving-plan", {
-                          state: { housePrice, savings }
+                          state: {
+                            formData: {
+                              housePrice,
+                              savings,
+                              currency,
+                              downPaymentPct,
+                              customPct
+                            }, housePrice, savings
+                          }
                         })
+
                       }
                     >
                       CREATE SAVINGS PLAN

@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import './form.css';
 import { useLocation, useNavigate } from 'react-router-dom';
+import PlanTabs from "./PlanTabs";
+import { usePlans } from "./PlanContext";
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
+import DownloadMortgagePlan from './components/DownloadMortgagePlan';
+
 
 export default function Mortgage() {
   const [income, setIncome] = useState('');
@@ -10,6 +16,7 @@ export default function Mortgage() {
   const [currency, setCurrency] = useState('VND');
   const [selectedYear, setSelectedYear] = useState(1);
   const yearMax = Math.ceil(mortgageTerm); 
+  const [timeFrame, setTimeFrame] = useState("Monthly");
   const navigate = useNavigate();
 
   const handleYearChange = (e) => {
@@ -18,10 +25,11 @@ export default function Mortgage() {
 
 
   const location = useLocation();
+  const prevForm = location.state?.formData || {};
+  const yearlyArray = location.state?.yearlyArray || {};
   const presentPrice = location.state?.presentPrice || 0;
   const futurePrice = location.state?.futurePrice || null;
 
-  // Ưu tiên futurePrice nếu có
   const loanBasePrice = futurePrice ?? presentPrice;
   const currencyList = ['VND', 'USD', 'EUR'];
   const currencySymbols = {
@@ -36,14 +44,15 @@ export default function Mortgage() {
     setCurrency(currencyList[next]);
   };
 
-  const loan = presentPrice * 0.7;
+  
+  const loan = loanBasePrice * 0.7;
   const numPayments = mortgageTerm * 12;
   const principalPayment = loan / numPayments;
 
   // Fixed interest for first 3 years
   let maxTotalMonthlyPayment = 0;
 
-  let schedule = [];
+  let scheduleMonth = [];
   let remaining = loan;
 
   for (let i = 0; i < numPayments; i++) {
@@ -54,26 +63,90 @@ export default function Mortgage() {
       currentYear <= 3
         ? 0.055 / 12
         : (depositRate + 0.03) / 12;
-      const interestPayment = remaining * monthlyInterestRate;
-      const totalPayment = principalPayment + interestPayment;
+
+    const interestPayment = remaining * monthlyInterestRate;
+    const totalPayment = principalPayment + interestPayment;
 
     maxTotalMonthlyPayment = Math.max(maxTotalMonthlyPayment, totalPayment);
 
-    schedule.push({
-      month: i,
+    scheduleMonth.push({
+      month: (i % 12) + 1,
+      year: currentYear,
       principal: principalPayment,
       interest: interestPayment,
       total: totalPayment,
       remaining: remaining - principalPayment,
     });
 
-    schedule = schedule.filter(item => {
-      const year = Math.floor((item.month) / 12) + 1;
-      return year === selectedYear;
-    });
-
     remaining -= principalPayment;
   }
+
+  remaining = loan;
+
+    // Filter theo năm
+  let scheduleMonthFull = scheduleMonth;
+  scheduleMonth = scheduleMonth.filter(item => item.year === selectedYear);
+
+  let scheduleYearly = [];
+  let currentYear = 1;
+  let monthInYear = 0;
+
+  let yearlyEntry = {
+    year: currentYear,
+    principal: 0,
+    interest: 0,
+    total: 0,
+    remaining: 0,
+  };
+
+  for (let i = 0; i < numPayments; i++) {
+    const depositRate = 0.048;
+    const monthlyInterestRate =
+      currentYear <= 3
+        ? 0.055 / 12
+        : (depositRate + 0.03) / 12;
+
+    const interestPayment = remaining * monthlyInterestRate;
+    const totalPayment = principalPayment + interestPayment;
+
+    maxTotalMonthlyPayment = Math.max(maxTotalMonthlyPayment, totalPayment);
+
+    yearlyEntry.principal += principalPayment;
+    yearlyEntry.interest += interestPayment;
+    yearlyEntry.total += totalPayment;
+    yearlyEntry.remaining = remaining - principalPayment;
+
+    remaining -= principalPayment;
+    monthInYear++;
+
+    if (monthInYear === 12 || i === numPayments - 1) {
+      scheduleYearly.push({ ...yearlyEntry });
+
+      // Reset cho năm tiếp theo
+      currentYear++;
+      monthInYear = 0;
+      yearlyEntry = {
+        year: currentYear,
+        principal: 0,
+        interest: 0,
+        total: 0,
+        remaining: remaining,
+      };
+    }
+  }
+
+    let scheduleYearFull = scheduleYearly;
+    scheduleYearly = scheduleYearly.filter(item => item.year === selectedYear);
+
+    let schedule = [];
+  
+    if (timeFrame == "Monthly") {
+      schedule = scheduleMonth;
+    }
+    else {
+      schedule = scheduleYearly;
+    }
+
 
   // Minimum income required
   const minRequiredIncome = maxTotalMonthlyPayment + parseFloat(expenses);
@@ -81,9 +154,9 @@ export default function Mortgage() {
 
   console.log(qualified);
 
-
   return (
     <div className="container">
+              <PlanTabs />
       <div className="cards">
         {/* LEFT INPUT */}
         <div className="card input-card">
@@ -197,12 +270,16 @@ export default function Mortgage() {
             <div className="flex-row space-between align-center">
               <div>
                 <label style={{ color: '#2778E1', fontWeight: 'bold' }}>Time Frame</label>
-                <select>
-                  <option>Monthly</option>
-                  <option>Yearly</option>
+                <select value={timeFrame} onChange={(e) => setTimeFrame(e.target.value)}>
+                  <option value="Monthly">Monthly</option>
+                  <option value="Yearly">Yearly</option>
                 </select>
+
               </div>
-              <button className="download-btn">Download</button>
+              <DownloadMortgagePlan
+                scheduleMonthFull={scheduleMonthFull}
+                scheduleYearFull={scheduleYearFull}
+              />
               <select className="calendar-btn" value={selectedYear} onChange={handleYearChange}>
                 {Array.from({ length: yearMax }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
@@ -228,17 +305,17 @@ export default function Mortgage() {
               </tr>
             </thead>
             <tbody>
-              {schedule.slice(0, 12).map((item, index) => (
-                <tr key={index}>
-                  <td>{Math.floor(item.month / 12) + 1}</td>
-                  <td>{((item.month) % 12 + 1)}</td>
-                  <td>{item.remaining.toFixed(2).toLocaleString()}</td>
-                  <td>{item.principal.toFixed(2).toLocaleString()}</td>
-                  <td>{item.interest.toFixed(2).toLocaleString()}</td>
-                  <td>{item.total.toFixed(2).toLocaleString()}</td>
-                </tr>
-              ))}
-            </tbody>
+            {schedule.map((item, index) => (
+              <tr key={index}>
+                <td>{item.year}</td>
+                <td>{timeFrame === "Monthly" ? item.month : "-"}</td>
+                <td>{item.remaining.toFixed(2).toLocaleString()}</td>
+                <td>{item.principal.toFixed(2).toLocaleString()}</td>
+                <td>{item.interest.toFixed(2).toLocaleString()}</td>
+                <td>{item.total.toFixed(2).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
           </table>
           </div>
 
@@ -252,9 +329,18 @@ export default function Mortgage() {
           <button
             className="next-btn"
             onClick={() => navigate("/final-plan", {
-              state: { status: qualified ? true : false }
-            })}
-            disabled={!qualified}
+              state: {
+                formData: {
+                  ...prevForm,
+                  income,
+                  expenses,
+                  mortgageTerm,
+                  customTerm,
+                },
+                status: qualified, scheduleMonthFull, scheduleYearFull, yearlyArray
+              }
+            })
+          }
           >
             NEXT
           </button>
