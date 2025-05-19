@@ -1,0 +1,186 @@
+/* Home.css */
+
+:root {
+    --primary-blue:    #00C2FF;
+    --dark-blue:       #005F9E;
+    --gradient-top:    #8AE2FF;
+    --gradient-bottom: #FFFFFF;
+  }
+  
+  /* Full-screen gradient background (cyan at top, white at bottom) */
+  .home-tab1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 2rem;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(
+      to bottom,
+      var(--gradient-top),
+      var(--gradient-bottom)
+    );
+  }
+  
+  /* Main heading */
+  .heading {
+    font-size: 3rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+  .highlight {
+    color: var(--primary-blue);
+  }
+  
+  /* “We will help you:” + bullet list */
+  .subheading {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+    width: 100%;
+    max-width: 600px;
+  }
+  .benefits li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+  .icon {
+    font-size: 1.3rem;
+    color: var(--primary-blue);
+    margin-right: 0.5rem;
+    color: #000;
+  }
+  
+  /* Stepper track */
+  .stepper {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 2rem;
+  }
+  .stepper::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: #e0e0e0;
+    z-index: 1;
+  }
+  
+  /* Each step */
+  .step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 2;
+  }
+  
+  /* Circles: inactive vs active */
+  .circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+  }
+  .step:not(.active) .circle {
+    border: 3px solid #ccc;
+    background: none;
+  }
+  .step.active .circle {
+    border: 3px solid #000;
+    background: var(--primary-blue);
+  }
+  
+  /* Step icons & labels */
+  .step-icon {
+    font-size: 1.6rem;
+    color: #333;
+    margin-bottom: 0.25rem;
+  }
+  .step.active .step-icon {
+    color: var(--primary-blue);
+  }
+  .step-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #333;
+  }
+  .step.active .step-label {
+    color: var(--primary-blue);
+  }
+  
+  /* Tip box with dark-blue background */
+  .tip-box {
+    background: var(--dark-blue);
+    border: 2px solid var(--dark-blue);
+    border-radius: 0.5rem;
+    padding: 1rem 1.5rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 0.95rem;
+  }
+  
+  /* Call-to-action button */
+  .start-button {
+    background: var(--primary-blue);
+    color: #fff;
+    border: none;
+    border-radius: 0.75rem;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, box-shadow 0.2s;
+    box-shadow: 0 8px 16px rgba(0, 194, 255, 0.3);
+  }
+  .start-button:hover {
+    opacity: 0.9;
+    box-shadow: 0 12px 24px rgba(0, 194, 255, 0.4);
+  }
+  .highlight {
+    /* keep your cyan fill */
+    color: var(--primary-blue);
+  
+    /* 1) WebKit text-stroke for a true outline in Safari/Chrome */
+    -webkit-text-stroke: 1px #000;
+  
+    /* 2) Fallback outline via four-way text-shadows for broader support */
+    text-shadow:
+       -1px -1px 0 #000,
+        1px -1px 0 #000,
+       -1px  1px 0 #000,
+        1px  1px 0 #000;
+  }
+/* Make “We will help you:” bold and darker */
+.subheading {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;       /* heavy bold */
+    color: #1D2E40;          /* deep charcoal blue */
+  }
+  
+  /* Make each bullet point label bold and darker */
+  .benefits li span {
+    font-weight: 600;       /* semi-bold for the text */
+    color: #1D2E40;          /* same deep charcoal */
+  }
+  
+  /* (Keep the check‐icon cyan so it still pops) */
+  .benefits .icon {
+    color: var(--primary-blue);
+  }
+      

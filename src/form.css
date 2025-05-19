@@ -1,0 +1,498 @@
+/* Theme variables */
+:root {
+    --primary-blue:    #00C2FF;
+    --dark-blue:       #005F9E;
+    --gradient-top:    #8AE2FF;
+    --gradient-bottom: #FFFFFF;
+  }
+  
+  /* Full‐screen cyan→white background */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(
+      to bottom,
+      var(--gradient-top),
+      var(--gradient-bottom)
+    );
+  }
+  
+  /* Cards Row */
+  .cards {
+    display: flex;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 2rem;
+  }
+  
+  /* Shared Card */
+  .card {
+    background: #fff;
+    border-radius: 8px;
+    padding: 2rem;
+    flex: 1;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  
+  /* Card Titles & Highlights */
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .highlight {
+    color: var(--primary-blue);
+  }
+  .card-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #555;
+  }
+  
+  /* Form Rows */
+  .form-row {
+    margin-bottom: 1.5rem;
+  }
+  .form-row label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Input + Icon Group */
+  .input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 4px;
+    background: #fff;
+    border: 3px solid #000000;
+    width: 258;
+    height: 45;
+    top: 433px;
+    left: 349px;
+    border-radius: 13px;
+    border-width: 3px;
+  }
+
+  .input-group .icon {
+    padding: 0 0.75rem;
+    color: #666;
+    font-size: 1.2rem;
+  }
+  .input-group input {
+    flex: 1;
+    border: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+    background: transparent;
+    outline: none;
+  }
+  .input-group input:focus {
+    box-shadow: inset 0 0 0 2px var(--primary-blue);
+  }
+  
+  /* Form Tip & Check Button */
+  .form-tip {
+    font-size: 0.875rem;
+    color: #888;
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  .check-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  .check-btn {
+    background: var(--primary-blue);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-size: 20px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    width: 137.1351318359375;
+    height: 43;
+    top: 822px;
+    left: 470px;
+    border-radius: 7px;
+
+  }
+  .check-btn:hover {
+    opacity: 0.9;
+  }
+  
+  /* Result Text */
+  .result-card p {
+    position: relative;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    color: #333;
+  }
+  .result-cta {
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Plan Controls */
+  .plan-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    max-width: 1200px;
+  }
+  .plan-buttons {
+    display: flex;
+    gap: 0.5rem;
+  }
+  .plan-btn {
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+  }
+  .plan-btn.active {
+    background: var(--primary-blue);
+    color: #fff;
+    border-color: var(--primary-blue);
+  }
+  .compare-btn {
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: #888;
+    padding: 0.5rem 1rem;
+    cursor: not-allowed;
+  }
+  .link-icon {
+    font-size: 1.25rem;
+    color: #888;
+  }
+  .current-plan-btn {
+    background: var(--primary-blue);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .plan-tip {
+    font-size: 0.875rem;
+    color: #666;
+    margin-left: 1rem;
+  }
+  /* DownPayment.css */
+
+/* … existing styles … */
+
+.result-card .monthly-plan {
+    position: relative;
+    margin-top: 1rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .form-row-double {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.form-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-col label {
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 100%;
+  letter-spacing: 0%;
+  color: #000;
+  margin-bottom: 10px;
+}
+
+.result-success {
+  font-size: 16px;
+  color: #333;
+  padding-bottom: 60px; /* chừa chỗ cho nút bên dưới */
+}
+
+.result-success p {
+  margin: 12px 0;
+  color: #333;
+}
+
+.result-success strong {
+  color: #007bff; /* xanh dương đậm */
+  font-weight: 600;
+}
+
+.card-title {
+  color: #00bfff;
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+
+.next-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  padding-top: 180px;
+  
+}
+
+.next-btn {
+  background-color: #ffc107;
+  border: none;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  width: 137.1351318359375;
+  height: 43;
+  top: 822px;
+  left: 1140px;
+  border-radius: 7px;
+}
+
+.next-btn:hover {
+  background-color: #e0a800;
+}
+
+.payment-container {
+  max-height: 250px; 
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-top: 12px;
+}
+
+.payment-schedule {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+}
+
+.payment-schedule th,
+.payment-schedule td {
+  color: #2778E1;
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: center;
+}
+
+.result-card p {
+  margin: 8px 0;
+}
+
+.next-btn {
+  margin-top: 20px;
+  background-color: #ffd500;
+  padding: 12px 24px;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.download-btn,
+.calendar-btn {
+  background-color: #ffffff;
+  border: 2px solid #00bfff;
+  color: #00bfff;
+  padding: 8px 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 191, 255, 0.2);
+  margin-left: 10px;
+}
+
+.download-btn:hover,
+.calendar-btn:hover {
+  background-color: #00bfff;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 191, 255, 0.3);
+}
+
+.flex-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.result-card {
+  background: white;
+}
+
+.result-success,
+.result-warning {
+  margin-top: 1rem;
+}
+
+.summary-line {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.followup-line {
+  font-size: 0.95rem;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.suggestions {
+  list-style-type: none;
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+.export-btn {
+  background-color: #facc15;
+  color: #111827;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.export-btn:hover {
+  background-color: #eab308;
+}
+
+/* Tooltip hover kiểu icon ⓘ */
+.tooltip-icon {
+  display: inline-block;
+  margin-left: 6px;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Tooltip hover box */
+.tooltip-icon:hover::after {
+  content: "Vietnam's annual rate growth for:\A• Apartment: 5% to 10%\A• Landed House: 7% to 12%\A NOTE: This depends on location, economy, and demand. You can enter your own assumptions!";
+  white-space: pre-wrap;
+  position: absolute;
+  top: 24px;
+  left: 0;
+  background-color: #fde68a;
+  color: #111827;
+  padding: 10px;
+  width: 300px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  border-left: 6px solid #facc15;
+}
+
+.result-swiper {
+  min-height: 360px;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.swiper-control {
+  cursor: pointer;
+  color: #2778e1;
+  font-weight: bold;
+  margin-top: 16px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.swiper-control:hover {
+  text-decoration: underline;
+}
+
+.swiper {
+  width: 100%;
+  max-height: 100%;
+  min-height: 420px;
+  overflow: hidden;
+}
+
+.swiper-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 420px;
+}
+
+
+.loan-about-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 400px;
+}
+
+.tab-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  justify-content: center;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+  color:black;
+}
+
+.tab-btn:hover {
+  background-color: #e2f0ff;
+}
+
+.tab-btn.active {
+  background-color: #00cfff;
+  color: white;
+  border-color: #00cfff;
+}
+
+.tab-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
