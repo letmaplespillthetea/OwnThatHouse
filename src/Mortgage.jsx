@@ -14,10 +14,12 @@ export default function Mortgage() {
   const yearlyArray = location.state?.yearlyArray || [];
   const presentPrice = location.state?.presentPrice || 0;
   const futurePrice = location.state?.futurePrice || 0;
+  const downPaymentPct = location.state?.downPaymentPct || 30;
 
   const [incomeInput, setIncomeInput] = useState("");
   const [expensesInput, setExpensesInput] = useState("");
   const [mortgageTerm, setMortgageTerm] = useState("20");
+  const [isChecked, setIsChecked] = useState(false);
   const [customTerm, setCustomTerm] = useState("");
   const [currency, setCurrency] = useState("VND");
   const [selectedYear, setSelectedYear] = useState(1);
@@ -36,7 +38,7 @@ export default function Mortgage() {
   };
 
   const loanBasePrice = futurePrice || presentPrice;
-  const loanAmount = loanBasePrice * 0.7;
+  const loanAmount = loanBasePrice * (1 - downPaymentPct);
   const termYears = mortgageTerm === "custom" ? parseInt(customTerm, 10) || 0 : parseInt(mortgageTerm, 10);
   const totalPayments = termYears * 12;
 
@@ -132,7 +134,7 @@ export default function Mortgage() {
                   const next = (list.indexOf(currency) + 1) % list.length;
                   setCurrency(list[next]);
                 }}>
-                  {currency === "VND" ? "₫" : currency === "USD" ? "$" : "€"}
+                  {currency === "VND" ? "million ₫" : currency === "USD" ? "$" : "€"}
                 </div>
                 <input
                   type="text"
@@ -141,7 +143,7 @@ export default function Mortgage() {
                   onChange={handleIncomeChange}
                 />
                 <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                  <option value="VND">₫</option>
+                  <option value="VND">million ₫</option>
                   <option value="USD">$</option>
                   <option value="EUR">€</option>
                 </select>
@@ -157,7 +159,7 @@ export default function Mortgage() {
                   const next = (list.indexOf(currency) + 1) % list.length;
                   setCurrency(list[next]);
                 }}>
-                  {currency === "VND" ? "₫" : currency === "USD" ? "$" : "€"}
+                  {currency === "VND" ? "million ₫" : currency === "USD" ? "$" : "€"}
                 </div>
                 <input
                   type="text"
@@ -166,7 +168,7 @@ export default function Mortgage() {
                   onChange={handleExpensesChange}
                 />
                 <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                  <option value="VND">₫</option>
+                  <option value="VND">million ₫</option>
                   <option value="USD">$</option>
                   <option value="EUR">€</option>
                 </select>
@@ -197,9 +199,9 @@ export default function Mortgage() {
             </div>
           </div>
 
-          <div className="check-btn-wrapper">
-            <button className="check-btn">CHECK</button>
-          </div>
+          <button className="check-btn" onClick={() => setIsChecked(true)}>
+            CHECK
+          </button>
         </div>
 
         {/* RESULT CARD */}
@@ -208,7 +210,7 @@ export default function Mortgage() {
             <span className="highlight">RESULT</span>
           </h2>
 
-          {!incomeInput ? (
+          {!isChecked ? (
             <p className="card-subtitle" style={{ color: "#f97316", fontWeight: "500" }}>
               You have not enter any information!
               <LoanInfoCard />
@@ -218,13 +220,13 @@ export default function Mortgage() {
               <p>
                 Minimum Income for the Loan:{" "}
                 <strong>
-                  {minRequiredIncome.toLocaleString("en-US")} {currency}
+                  {minRequiredIncome.toLocaleString("en-US")} {" million "} {currency}
                 </strong>
               </p>
               <p>
                 Your Declared Monthly Income:{" "}
                 <strong>
-                  {parseNumber(incomeInput).toLocaleString("en-US")} {currency}
+                  {parseNumber(incomeInput).toLocaleString("en-US")} {" million "} {currency}
                 </strong>
               </p>
 
@@ -272,10 +274,10 @@ export default function Mortgage() {
                       <tr key={index}>
                         <td>{item.year}</td>
                         <td>{timeFrame === "Monthly" ? item.month : "-"}</td>
-                        <td>{item.remaining.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td>{item.principal.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td>{item.interest.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                        <td>{item.total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                        <td>{item.remaining.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                        <td>{item.principal.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                        <td>{item.interest.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                        <td>{item.total.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
                       </tr>
                     ))}
                   </tbody>

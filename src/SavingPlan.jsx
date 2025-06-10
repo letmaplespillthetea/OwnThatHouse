@@ -39,7 +39,7 @@ export default function SavingPlan() {
   // Currency state + symbol map
   const [currency, setCurrency] = useState(initialCurrency);
   const currencySymbols = {
-    VND: "₫",
+    VND: "million ₫",
     USD: "$",
     EUR: "€"
   };
@@ -89,6 +89,7 @@ export default function SavingPlan() {
   const [monthlySavings, setMonthlySavings] = useState(null);
   const [yearlyArray, setYearlyArray] = useState([]);
   const [futurePrice, setFuturePrice] = useState(0);
+  const [futureDownPayment, setFutureDownPayment] = useState(0);
   const [showResult, setShowResult] = useState(false);
 
   useEffect(() => {
@@ -146,6 +147,7 @@ export default function SavingPlan() {
 
     // 4) Future down payment needed (includes 1.5% buffer)
     const futureDownPayment = projPrice * (dpPct + 0.015);
+    setFutureDownPayment(futureDownPayment);
 
     // 5) Grow current savings at “no deposit” rate
     const noDepositRate = yrs === 1 ? 0.047 : 0.049;
@@ -209,13 +211,13 @@ export default function SavingPlan() {
     });
   };
 
-  function calculateMonthlyInvestment({ futurePrice, currentSavings, averageCompoundReturn, managementFee, yearsToSave }) {
+  function calculateMonthlyInvestment({ futureDownPayment, currentSavings, averageCompoundReturn, managementFee, yearsToSave }) {
       const returnRate = (averageCompoundReturn - managementFee) / 100; // Convert % to decimal
       const r = returnRate / 12;
       const totalMonths = yearsToSave * 12;
 
       const futureValueOfSavings = currentSavings * Math.pow(1 + r, totalMonths);
-      const numerator = futurePrice - futureValueOfSavings;
+      const numerator = futureDownPayment - futureValueOfSavings;
       const denominator = (Math.pow(1 + r, totalMonths) - 1) / r;
 
       const monthlyInvestment = numerator / denominator;
@@ -251,7 +253,7 @@ export default function SavingPlan() {
                   onChange={handleHousePriceChange}
                 />
                 <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                  <option value="VND">₫</option>
+                  <option value="VND">million ₫</option>
                   <option value="USD">$</option>
                   <option value="EUR">€</option>
                 </select>
@@ -269,7 +271,7 @@ export default function SavingPlan() {
                   onChange={handleSavingsChange}
                 />
                 <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
-                  <option value="VND">₫</option>
+                  <option value="VND">million ₫</option>
                   <option value="USD">$</option>
                   <option value="EUR">€</option>
                 </select>
@@ -474,7 +476,7 @@ export default function SavingPlan() {
                     <td>
                       {showResult
                         ? calculateMonthlyInvestment({
-                            futurePrice: futurePrice,
+                            futureDownPayment: futureDownPayment,
                             currentSavings: parseNumber(savingsInput),
                             averageCompoundReturn: parseFloat(row.return.replace(",", ".")),
                             managementFee: parseFloat(row.fee.replace(",", ".")),

@@ -20,7 +20,7 @@ export default function DownPayment() {
 
   // 2) Create a simple mapping from the currency code to its symbol.
   const currencySymbols = {
-    VND: '₫',
+    VND: 'million ₫',
     USD: '$',
     EUR: '€'
   };
@@ -133,7 +133,7 @@ export default function DownPayment() {
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
                 >
-                  <option value="VND">₫</option>
+                  <option value="VND">million ₫</option>
                   <option value="USD">$</option>
                   <option value="EUR">€</option>
                 </select>
@@ -154,7 +154,7 @@ export default function DownPayment() {
                   value={currency}
                   onChange={(e) => setCurrency(e.target.value)}
                 >
-                  <option value="VND">₫</option>
+                  <option value="VND">million ₫</option>
                   <option value="USD">$</option>
                   <option value="EUR">€</option>
                 </select>

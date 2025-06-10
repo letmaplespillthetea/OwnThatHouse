@@ -78,7 +78,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    max-width: 400px;
+    max-width: 300px;
     min-height: 40px;
     border-radius: 4px;
     background: #fff;
@@ -100,6 +100,7 @@
     flex: 1;
     border: none;
     padding: 0.5rem;
+    max-width: 145px;
     font-size: 1rem;
     color: #333;
     background: transparent;
@@ -226,6 +227,7 @@
 .form-col {
   flex: 1;
   display: flex;
+  max-width: 300px;
   flex-direction: column;
 }
 

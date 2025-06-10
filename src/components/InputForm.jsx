@@ -37,7 +37,7 @@ const InputForm = ({
       <label htmlFor={id}>{label}</label>
       <div className="input-group">
         <span className="currency-toggle">
-          {currency === "VND" ? "₫" : currency === "USD" ? "$" : "€"}
+          {currency === "VND" ? "million ₫" : currency === "USD" ? "$" : "€"}
         </span>
         <input
           type="text"

@@ -3,7 +3,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Home          from './Home';
-import DownPayment   from './Downpayment';
+import DownPayment   from './DownPayment';
 import SavingPlan    from './SavingPlan';
 import Mortgage      from './Mortgage';
 import FinalPlan     from './FinalPlan';
