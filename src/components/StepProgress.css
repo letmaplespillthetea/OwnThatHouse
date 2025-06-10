@@ -1,0 +1,61 @@
+/* src/components/StepProgress.css */
+
+/* Container is positioned fixed on the right side of the viewport */
+.stepper-container {
+  position: fixed;
+  top: 50%;
+  right: 24px;              /* distance from right edge; adjust as needed */
+  transform: translateY(-50%); /* center vertically */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;            /* keep it on top of other content */
+}
+
+/* Each stepper circle */
+.stepper-circle {
+  width: 24px;              /* outer circle diameter */
+  height: 24px;
+  border: 3px solid #000;   /* black outline; change color as desired */
+  border-radius: 50%;
+  background-color: white;  /* default fill color for inactive */
+  cursor: pointer;
+  margin: 0;                /* override any default */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;    /* remove underline */
+}
+
+/* “Active” circle: filled with blue and slightly larger border */
+.stepper-circle.active {
+  border-color: #00C2FF;     /* or any highlight color you want */
+  background-color: #00C2FF; /* fill color */
+}
+
+/* A small inner dot for each circle to accentuate state (optional) */
+.stepper-circle::after {
+  content: '';
+  width: 12px;               /* inner dot size */
+  height: 12px;
+  border-radius: 50%;
+  background-color: transparent; /* transparent by default */
+  transition: background-color 0.2s ease;
+}
+
+.stepper-circle.active::after {
+  background-color: white;    /* white dot inside active blue circle */
+}
+
+/* Vertical line connecting the circles */
+.stepper-line {
+  width: 3px;                /* thickness of the line */
+  height: 48px;              /* length of each segment; adjust as needed */
+  background-color: #ccc;    /* light gray line */
+  margin: 4px 0;             /* spacing above and below the line */
+}
+
+/* If you want the line segments between active steps to also appear highlighted, you can add: */
+.stepper-circle.active + .stepper-line {
+  background-color: #00C2FF; /* same blue as active circle border/fill */
+}

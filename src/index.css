@@ -1,0 +1,106 @@
+/* ──────────────────────────────────────────────────────────────────────────── */
+/*  src/index.css                                                            */
+/* ──────────────────────────────────────────────────────────────────────────── */
+
+/* 1) RESET DEFAULT BROWSER MARGINS & PADDING, AND FORCE 100% WIDTH/HEIGHT      */
+html,
+body {
+  margin: 0;              /* remove default browser margin */
+  padding: 0;             /* remove default browser padding */
+  width: 100%;            /* allow html/body to span full browser width */
+  height: 100%;           /* allow html/body to span full browser height */
+  overflow-x: hidden;     /* hide any accidental horizontal scrollbar */
+  box-sizing: border-box; /* include padding/border in element’s total width */
+}
+
+/* 2) ENSURE ALL ELEMENTS USE BORDER-BOX                                        */
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* 3) DEFINE GLOBAL CSS VARIABLES (optional but helpful)                         */
+:root {
+  /* Color variables—adjust as needed */
+  --primary-blue:    #00C2FF;
+  --dark-blue:       #005F9E;
+  --gradient-top:    #8AE2FF;
+  --gradient-bottom: #FFFFFF;
+
+  /* Font and color scheme resets */
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  /* These next four lines mirror html/body but can remain if some components use them */
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* 4) LINK STYLES (unchanged)                                                     */
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+/* 5) REMOVE FLEX-CENTERING ON <body>                                            */
+/*    Your old code likely had “display: flex; place-items: center;”.            */
+/*    By removing those lines, <body> can now stretch the full width.            */
+body {
+  margin: 0;             /* no extra body margin */
+  /* display: flex; */         /* ← REMOVE or COMMENT OUT */
+  /* place-items: center; */    /* ← REMOVE or COMMENT OUT */
+  min-width: 320px;      /* optional: prevent extremely narrow rendering */
+  min-height: 100vh;     /* ensure body covers the full browser height */
+}
+
+/* 6) HEADING STYLES (unchanged)                                                  */
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* 7) BUTTON STYLES (unchanged)                                                   */
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* 8) LIGHT/DARK COLOR-SCHEME OVERRIDES (unchanged)                               */
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}

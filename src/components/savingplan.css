@@ -1,0 +1,65 @@
+/* LoanAboutCard.css */
+
+.saving-plan-card {
+  background: #ffffff;
+  border: 1px solid #bae6fd; /* cyan-200 */
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 520px;
+  margin: auto;
+}
+
+.saving-plan-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #06b6d4; /* cyan-500 */
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.saving-plan-subtitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #006C68;
+  margin-bottom: 1rem;
+}
+
+.saving-plan-description {
+  font-size: 0.95rem;
+  color: #006C68;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.saving-plan-description .highlight {
+  color: #FFC62F;
+  font-weight: 800; 
+}
+
+.saving-plan-table-container {
+  overflow-x: auto;
+}
+
+.saving-plan-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.saving-plan-table th,
+.saving-plan-table td {
+  border: 1px solid #06b6d4; /* cyan-500 */
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: #006C68;
+}
+
+.saving-plan-table thead {
+  background-color: #ecfeff; /* cyan-50 */
+}
+
+.saving-plan-table tbody tr:nth-child(even) {
+  background-color: #f9fafb; /* light row zebra */
+}
