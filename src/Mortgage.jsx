@@ -37,8 +37,8 @@ export default function Mortgage() {
     setExpensesInput(formatted);
   };
 
-  const loanBasePrice = futurePrice || presentPrice;
-  const loanAmount = loanBasePrice * (1 - downPaymentPct);
+  const loanBasePrice = futurePrice ?? presentPrice;
+  const loanAmount = loanBasePrice * (1 - downPaymentPct / 100);
   const termYears = mortgageTerm === "custom" ? parseInt(customTerm, 10) || 0 : parseInt(mortgageTerm, 10);
   const totalPayments = termYears * 12;
 
@@ -287,7 +287,7 @@ export default function Mortgage() {
               <p style={{ marginTop: "12px" }}>
                 Principal payment from month 1 to end:{" "}
                 <strong>
-                  {principalPayment.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {currency}
+                  {principalPayment.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })} {" million "} {currency}
                 </strong>
               </p>
 

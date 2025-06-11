@@ -222,7 +222,7 @@ const {
               <ul style={{ paddingLeft: "1.25rem", marginBottom: "1rem", lineHeight: "1.6" }}>
                 <li>
                   <strong>Reduce</strong> your target home price → choose a lower budget. After calculation, the maximum house price you can afford with the current down payment plan is 
-                  <strong> {maxPrice.toLocaleString("en-US")} {currency}</strong> → You can visit 
+                  <strong> {maxPrice.toLocaleString("en-US")} {" million "} {currency}</strong> → You can visit 
                   <a href={filteredURL} target="_blank" rel="noopener noreferrer" style={{ color: "#f59e0b", fontWeight: 600, marginLeft: 4 }}>
                     this website
                   </a>{" "}to diversify your options.
